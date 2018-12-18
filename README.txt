@@ -1,4 +1,6 @@
-No Man's Sky auto batch modbuilder and updater with mod script lua definition system
+No Man's Sky auto modbuilder and updater with lua script mod definition system
+
+Fully automatic mod builder that automates every step of nms modding and provides an easy to use lua script mod definition system.
 
 How to use:
 1. Put your No Man's Sky game folder path into NMS_FOLDER.txt
@@ -39,5 +41,3 @@ Made by Mjjstral aka MetaIdea
 Copyright MIT license
 
 Contact: MetaIdea7@gmail.com
-
-
