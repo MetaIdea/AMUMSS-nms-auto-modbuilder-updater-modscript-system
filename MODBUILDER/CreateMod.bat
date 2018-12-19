@@ -3,7 +3,9 @@ set /p MOD_FILENAME=<MOD_FILENAME.txt
 set /p NMS_FOLDER=<NMS_FOLDER.txt
 set NMS_PCBANKS_FOLDER="%NMS_FOLDER%\GAMEDATA\PCBANKS\"
 set NMS_MODS_FOLDER=%NMS_PCBANKS_FOLDER%\MODS\
-
+if NOT %COMBINE_MODS% EQU 0 (
+	set MOD_FILENAME=CombinedMod.pak
+)
 REM ########################################################
 REM ############### Compile EXML to MBIN ###################
 REM ########################################################
@@ -51,19 +53,27 @@ REM ########################################################
 
 xcopy /s /y /h /v "..\Builds\%MOD_FILENAME%" "..\..\" 
 
-:choice
 echo -----------------------------------------------------------
-set /P CHOICE=Would you like to copy the mod %MOD_FILENAME% to your game folder and delete "DISABLEMODS.TXT" ? [y/n]
-if /I "%CHOICE%" EQU "y" goto :COPY_TO_NMS_MODS_FOLDER
-if /I "%CHOICE%" EQU "n" goto :DONT_COPY_TO_NMS_MODS_FOLDER
-goto :choice
-:COPY_TO_NMS_MODS_FOLDER
-mkdir %NMS_MODS_FOLDER%
-xcopy /s /y /h /v ..\Builds\%MOD_FILENAME% %NMS_MODS_FOLDER% 	
-del %NMS_PCBANKS_FOLDER%\DISABLEMODS.TXT 
-:DONT_COPY_TO_NMS_MODS_FOLDER
 
+if NOT %COMBINE_MODS% EQU 0 (
+	if %NumberScripts% EQU %ScriptCounter% (
+		goto :choice
+	) else (
+		goto :DONT_COPY_TO_NMS_MODS_FOLDER	
+	)
+)
 
+	:choice
+	set /P CHOICE=Would you like to copy the mod %MOD_FILENAME% to your game folder and delete "DISABLEMODS.TXT" ? [y/n]
+	if /I "%CHOICE%" EQU "y" ( goto :COPY_TO_NMS_MODS_FOLDER )
+	if /I "%CHOICE%" EQU "n" ( goto :DONT_COPY_TO_NMS_MODS_FOLDER )
+	goto :choice
+	:COPY_TO_NMS_MODS_FOLDER
+	mkdir %NMS_MODS_FOLDER%
+	xcopy /s /y /h /v ..\Builds\%MOD_FILENAME% %NMS_MODS_FOLDER% 	
+	del %NMS_PCBANKS_FOLDER%\DISABLEMODS.TXT 
+	:DONT_COPY_TO_NMS_MODS_FOLDER
+	
 cd ..
 
 

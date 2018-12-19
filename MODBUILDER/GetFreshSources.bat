@@ -17,9 +17,16 @@ for /F "tokens=*" %%A in (..\MOD_MBIN_SOURCE.txt) do (
 	REM for /r %%a in (*.MBIN) do MBINCompiler.exe "%%a" -y -f -d "%cd%\DECOMPILED"
 	set MBIN_FILE=%%A
 	set EXML_FILE=!MBIN_FILE:.MBIN=.EXML!
-	xcopy /y /h /v /i "%cd%\DECOMPILED\!EXML_FILE!" "..\MOD\%%A\..\"
+	if NOT %COMBINE_MODS% EQU 0 (
+		@ECHO N|xcopy /-Y /h /v /i "%cd%\DECOMPILED\!EXML_FILE!" "..\MOD\%%A\..\" 
+		rem xcopy /y /h /v /i "%cd%\DECOMPILED\!EXML_FILE!" "..\MOD\%%A\..\" 
+	) ELSE (
+		xcopy /y /h /v /i "%cd%\DECOMPILED\!EXML_FILE!" "..\MOD\%%A\..\" 
+	)
 )
+endlocal 
 
 cd ..
 rmdir /s /q "%CD%\_TEMP"
+
 

@@ -1,3 +1,5 @@
+SET COMBINE_MODS=0
+
 @echo off
 REM ########################################################
 REM ############### get last MBINCompiler Build ############
@@ -7,14 +9,24 @@ xcopy /y /h /v /i "NMS_FOLDER.txt" "MODBUILDER/NMS_FOLDER.txt"
 cd MODBUILDER
 CALL MBINCompilerDownloader.bat
 
-rmdir /s /q "MOD"
-mkdir "MOD"
-
 cd ..\ModScript\
+SET ScriptCounter=0
+SET NumberScripts=0
+for /r %%E in (*.lua) do ( set /A NumberScripts=NumberScripts+1 )
 
 for /r %%M in (*.lua) do (
-	
+	SET /A ScriptCounter=ScriptCounter+1
 	cd %~dp0\MODBUILDER
+
+	if %ScriptCounter% EQU 1 (
+		rmdir /s /q "MOD"
+		mkdir "MOD"
+	)
+	if %COMBINE_MODS% EQU 0 (
+		rmdir /s /q "MOD"
+		mkdir "MOD"
+	)
+	
 	REM ########################################################
 	REM ############### PREPARATION ############################
 	REM ########################################################
@@ -44,5 +56,7 @@ for /r %%M in (*.lua) do (
 	CALL CreateMod.bat
 
 )
-pause
+echo -----------------------------------------
+echo mod builder finished
+echo -----------------------------------------
 timeout /t 10
