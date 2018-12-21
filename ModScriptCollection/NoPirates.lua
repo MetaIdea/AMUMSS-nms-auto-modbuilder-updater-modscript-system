@@ -1,6 +1,6 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "NoPirates+NoRandomSentinels.pak",
+["MOD_FILENAME"] 			= "NoPirates.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
@@ -18,7 +18,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"SpawnPirates",				"False"}, 	-- Original "True"
-								{"SpawnRobots",					"False"}	-- Original "True"
+								{"SpawnRobots",					"True"}		-- Original "True"
 							}
 						}
 					}

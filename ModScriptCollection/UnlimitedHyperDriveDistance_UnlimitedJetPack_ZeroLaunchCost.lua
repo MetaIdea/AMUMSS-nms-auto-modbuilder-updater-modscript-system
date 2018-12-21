@@ -2,7 +2,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 {
 ["MOD_FILENAME"] 			= "UnlimitedHyperDriveDistance_UnlimitedJetPack_ZeroLaunchCost.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
-["NMS_VERSION"]				= "1.72",
+["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
 		{
@@ -14,21 +14,21 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["REPLACE_AFTER_ENTRY"] = "Ship_Hyperdrive_JumpDistance",
+							["PRECEDING_KEY_WORDS"] = "Ship_Hyperdrive_JumpDistance",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"Bonus",	"10000000"} 	-- Original "100"
 							}
 						},
 						{
-							["REPLACE_AFTER_ENTRY"] = "Suit_Jetpack_Tank",
+							["PRECEDING_KEY_WORDS"] = "Suit_Jetpack_Tank",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"Bonus",	"10000000"}		-- Original "2.75"
 							}
 						},
 						{
-							["REPLACE_AFTER_ENTRY"] = "Ship_Launcher_TakeOffCost",
+							["PRECEDING_KEY_WORDS"] = "Ship_Launcher_TakeOffCost",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"Bonus",		"0"}		-- Original "50"

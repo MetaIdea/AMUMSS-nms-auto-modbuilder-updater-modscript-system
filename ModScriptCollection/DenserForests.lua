@@ -2,7 +2,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 {
 ["MOD_FILENAME"] 			= "DenserForests.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
-["NMS_VERSION"]				= "1.72",
+["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
 		{
@@ -14,7 +14,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["REPLACE_AFTER_ENTRY"] = "FOREST",
+							["PRECEDING_KEY_WORDS"] = "FOREST",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"320"}, 	-- Original "64"
@@ -22,7 +22,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["REPLACE_AFTER_ENTRY"] = "GRASS",
+							["PRECEDING_KEY_WORDS"] = "GRASS",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"100"}, 	-- Original "100"
@@ -30,7 +30,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["REPLACE_AFTER_ENTRY"] = "BIOMEPLANT",
+							["PRECEDING_KEY_WORDS"] = "BIOMEPLANT",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"550"}, 	-- Original "550"

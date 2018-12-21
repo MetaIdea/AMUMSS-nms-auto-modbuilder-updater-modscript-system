@@ -1,6 +1,6 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "NoPirates+NoRandomSentinels.pak",
+["MOD_FILENAME"] 			= "IntroLogoSkip.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
@@ -17,8 +17,8 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["PRECEDING_KEY_WORDS"] = "",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"SpawnPirates",				"False"}, 	-- Original "True"
-								{"SpawnRobots",					"False"}	-- Original "True"
+								{"SkipIntro",				"True"}, 	-- Original "False"
+								{"SkipLogos",				"True"} 	-- Original "False"
 							}
 						}
 					}

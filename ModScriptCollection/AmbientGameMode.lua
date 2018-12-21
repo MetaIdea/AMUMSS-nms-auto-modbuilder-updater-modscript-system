@@ -1,6 +1,6 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "NoPirates+NoRandomSentinels.pak",
+["MOD_FILENAME"] 			= "AmbientGameMode.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
@@ -14,11 +14,10 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "",
+							["PRECEDING_KEY_WORDS"] = "NewSaveGameMode",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"SpawnPirates",				"False"}, 	-- Original "True"
-								{"SpawnRobots",					"False"}	-- Original "True"
+								{"PresetGameMode",  "6152"}
 							}
 						}
 					}
