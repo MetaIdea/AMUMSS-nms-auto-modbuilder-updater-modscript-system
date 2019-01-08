@@ -1,6 +1,6 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "AmbientGameMode.pak",
+["MOD_FILENAME"] 			= "GodMode.pak",
 ["MOD_AUTHOR"]				= "Mjjstal",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 

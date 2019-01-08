@@ -9,7 +9,16 @@ cd _TEMP
 for /F "tokens=*" %%A in (..\MOD_PAK_SOURCE.txt) do (
 	xcopy /s /i /y /h /v "%NMS_PCBANKS_FOLDER%%%A" "%CD%\PAK_SOURCES\"
 )
-for /r %%a in (*.pak) do psarc.exe extract "%%a" --to="%cd%\EXTRACTED" -y
+
+
+setlocal EnableDelayedExpansion
+for /r %%B in (*.pak) do (
+	for /F "tokens=*" %%A in (..\MOD_MBIN_SOURCE.txt) do (
+		psarc.exe extract "%%B" %%A --to="%cd%\EXTRACTED" -y
+	)
+)
+)
+endlocal 
 
 setlocal EnableDelayedExpansion
 for /F "tokens=*" %%A in (..\MOD_MBIN_SOURCE.txt) do (
