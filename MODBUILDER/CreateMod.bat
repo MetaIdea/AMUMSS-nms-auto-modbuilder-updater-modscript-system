@@ -1,83 +1,281 @@
 @echo off
-set /p MOD_FILENAME=<MOD_FILENAME.txt
-set /p NMS_FOLDER=<NMS_FOLDER.txt
-set NMS_PCBANKS_FOLDER="%NMS_FOLDER%\GAMEDATA\PCBANKS\"
-set NMS_MODS_FOLDER=%NMS_PCBANKS_FOLDER%\MODS\
-if NOT %COMBINE_MODS% EQU 0 (
-	set MOD_FILENAME=CombinedMod.pak
+echo.^>^>^>     In CreateMod.bat
+rem All defined variables in CreateMod.bat start with _c (except FOR loop first parameter)
+rem so we can easily list them all like this on error, if needed: set _c
+
+set "_cC=C:"
+if defined _mVERBOSE set "_cC=CreateMod.bat:"
+
+set /p _cDateTime=<DateTime.txt
+
+REM Test if a MOD name exist
+set /p _cMOD_FILENAME=<MOD_FILENAME.txt
+echo.
+if [] == [!_cMOD_FILENAME!] (
+	echo.^>^>^> No MOD filename. Not creating pak file for this script.
+	goto :ENDIT
+) else (
+	REM echo.^>^>^> Found the MOD filename
 )
-REM ########################################################
-REM ############### Compile EXML to MBIN ###################
-REM ########################################################
 
+set _cName=ZZZCombinedMod_
+if defined _bPATCH (set _cName=PatchMod)
+rem on 0, treat as an Individual mod
+rem on 1, treat as a generic combined mod
+rem on 2, treat as a distinct combined mod
+rem on 3, treat as an Individual mod, the name being like Mod1+Mod2+Mod3.pak
+if %_bCOMBINE_MODS% EQU 0 ( set /p _cMOD_FILENAME=<MOD_FILENAME.txt )
+if %_bCOMBINE_MODS% EQU 1 ( set _cMOD_FILENAME=%_cName%_%_cDateTime%.pak)
+if %_bCOMBINE_MODS% EQU 2 ( set _cMOD_FILENAME=%_cName%.pak)
+if %_bCOMBINE_MODS% EQU 3 ( set /p _cMOD_FILENAME=<Composite_MOD_FILENAME.txt )
+
+set /p _cNMS_FOLDER=<NMS_FOLDER.txt
+set "_cNMS_PCBANKS_FOLDER=%_cNMS_FOLDER%\GAMEDATA\PCBANKS\"
+set "_cNMS_MODS_FOLDER=%_cNMS_PCBANKS_FOLDER%\MODS\"
+
+rem **********************  WE ARE IN MODBUILDER  *********************************
+if defined _mVERBOSE (
+	echo.^>^>^> %_cC% Starting directory
+	echo.%CD%
+)
+if %_bCOMBINE_MODS% GTR 0 (
+	echo.>>"..\REPORT.txt"
+)
+
+rem *******************   Copying to MODBUILDER\MOD ModExtraFilesToInclude content  ********************
+if not defined _bExtraFilesInPAK goto :NO_EXTRAFILES
+echo.
+echo.^>^>^> %_cC% Copying to MODBUILDER\MOD ModExtraFilesToInclude content...
+echo.>>"..\REPORT.txt"
+echo|set /p="[INFO]: Copying to MODBUILDER\MOD ModExtraFilesToInclude content...">>"..\REPORT.txt"
+echo.>>"..\REPORT.txt"
+xcopy /s /y /h /v /j "..\ModExtraFilesToInclude\*.*" "MOD"
+rem *******************  end Copying to MODBUILDER\MOD ModExtraFilesToInclude content  ********************
+
+:NO_EXTRAFILES
+REM echo.>>"..\REPORT.txt"
+echo|set /p="[INFO]: Starting final MBINCompiler and PAK phase...">>"..\REPORT.txt"
+echo.>>"..\REPORT.txt"
+
+rem ########################################################
+rem ############### Compile EXML to MBIN ###################
+rem ########################################################
+
+rem **********************  WE ARE GOING INTO MOD  *********************************
+if defined _mVERBOSE (
+	echo.
+	echo.^>^>^> %_cC% Changing to directory MOD
+)
 cd MOD
-@echo on
-for /r %%a in (*.exml) do ..\MBINCompiler.exe -y -f "%%a"
-@echo off
+if defined _mVERBOSE (
+	echo.%CD%
+)
 
-REM ########################################################
-REM ############### Compress to pak file ###################
-REM ########################################################
+echo.
+echo.^>^>^> %_cC% Compiling EXML file(s) in MOD folder
+echo.^>^>^> MBINCompiler working...
 
-setlocal EnableDelayedExpansion
-for /L %%n in (1 1 500) do if "!__cd__:~%%n,1!" neq "" set /a "len=%%n+1"
+rem otherwise the first echo is output twice for long paths (strange)
+set _cEmpty= 
+FOR /r %%G in (*.exml) do (
+	echo.----- [INFO] %%G
+	echo|..\MBINCompiler.exe -y -f "%%G" 1>NUL 2>NUL
+	Call :LuaEndedOkREMOVE
+	..\%_mLUA% ..\CheckMBINCompilerLOG.lua "..\\..\\" "..\\" "Compiling %%G"
+	Call :LuaEndedOk
+)
+
+rem ########################################################
+rem ############### Compress to pak file ###################
+rem ########################################################
+
+echo.----------------------------------------
+echo.
+echo.^>^>^> %_cC% Compressing MBIN (and possibly other) file(s) to PAK(s)
+
+set "_cDestination=..\..\Builds\IncrementalBuilds"
+set "_cFilename=%_cMOD_FILENAME:.pak=_%"
+
+rem ****seekker*****************************************************
+rem ---->>>> set working directory for the max 10 paks loop
+set "tempDel=%_cDestination%"
+
+rem this will check if there are 10 pak already stored
+If exist "%tempDel%\%_cFilename%(10).pak" goto :clearOld
+goto :preLoop rem if less than 10 goes to preloop function
+
+rem this function is intended to keep paks under 10 but still keep the last 5 paks
+:clearOld
+rem loop 1-5 in 1 step increments
+FOR /L %%G IN (1,1,5) do del "%tempDel%\%_cFilename%(%%G).pak"
+
+rem loop 6-10 in 1 step increments -- renames paks 5-10 to 1-5
+FOR /L %%A in (6,1,10) do (
+	SET /a "C=%%A"
+    SET /a "B=%%A-5"
+	rem "cmd.exe /c" is required to make some commands work when local bat launched from another /bat file /script or /program (in this case it could not find file without it)
+	cmd.exe /c ren "%tempDel%\%_cFilename%(%%C%%).pak" "%_cFilename%(%%B%%).pak"
+    REM call ECHO "%tempDel%\%_cFilename%(%%B%%).pak"
+)
+rem ****/seekker*****************************************************
+
+:preLoop
+rem find how many Builds we have done already for this mod
+set _ca=1
+:loop
+if exist "%_cDestination%\%_cFilename%(%_ca%).pak" set /a _ca+=1 && goto :loop
+
+FOR /L %%G in (1 1 500) do if "!__cd__:~%%G,1!" neq "" set /a "_cLen=%%G+1"
+
 setlocal DisableDelayedExpansion
-(for /r . %%g in (*.MBIN,*.BIN,*.H,*.DDS,*.PC,*.WEM,*.TTF,*.TTC,*.TXT,*.XML) do (
+(FOR /r . %%G in (*.BIN,*.H,*.DDS,*.FNT,*.JSON,*.lua,*.MBIN,*.mbin,*.MXML,*.PC,*.PNG,*.TTC,*.TTF,*.TXT,*.XML,*.WEM) do (
   @echo off
-  set "absPath=%%g"
+  set "_cAbsPath=%%G"
   setlocal EnableDelayedExpansion
-  set "relPath=!absPath:~%len%!"
-  echo(!relPath!
+  set "_cRelPath=!_cAbsPath:~%_cLen%!"
+  echo(!_cRelPath!
   endlocal
 )) > ..\"input.txt"
 
-@echo on
-..\psarc.exe create --overwrite --skip-missing-files --inputfile=..\input.txt --output="..\Builds\%MOD_FILENAME%"
-@echo off
+rem just in case...
+setlocal EnableDelayedExpansion
 
-REM ########################################################
-REM ############### Create Incremental Builds ##############
-REM ########################################################
+rem ########################################################
+rem ############### Create Incremental Builds ##############
+rem ########################################################
 
-set Destination="..\Builds\IncrementalBuilds"
-set Filename=%MOD_FILENAME:.pak=_%
-set a=1
-:loop
-if exist %Destination%\%Filename%(%a%).pak set /a a+=1 && goto :loop
-REM xcopy /s /y /h /v "..\Builds\%MOD_FILENAME%" "%Destination%\%Filename%(%a%).pak"
-..\psarc.exe create --overwrite --skip-missing-files --inputfile=..\input.txt --output=%Destination%\%Filename%(%a%).pak
+echo.
+echo|..\psarc.exe create --overwrite --skip-missing-files --inputfile=..\input.txt --output="%_cDestination%\%_cFilename%(%_ca%).pak"
+echo.
 
-REM ########################################################
-REM ############### Copy Mod to NMS Mod and root folder ####
-REM ########################################################
+rem ########################################################
+rem ############### Copy Mod to NMS Mod and root folder ####
+rem ########################################################
 
-xcopy /s /y /h /v "..\Builds\%MOD_FILENAME%" "..\..\" 
+rem if xcopy is asking "File or Directory?"  The "*" at the end makes it default to a file without asking
 
-echo -----------------------------------------------------------
+rem ******************************************************************************************************
+rem Windows File Paths Limit is 260 characters including terminating null character
+rem     (without editing Group Policy, it may not work on all version)
+rem ******************************************************************************************************
 
-if NOT %COMBINE_MODS% EQU 0 (
-	if %NumberScripts% EQU %ScriptCounter% (
-		goto :choice
-	) else (
-		goto :DONT_COPY_TO_NMS_MODS_FOLDER	
+rem on 0, treat as an Individual mod
+rem on 1, treat as a generic combined mod
+rem on 2, treat as a distinct combined mod
+rem on 3, treat as an Individual mod, the name being like Mod1+Mod2+Mod3.pak
+if %_bCOMBINE_MODS% EQU 2 ( goto :COMBINEDDISTINCTMODS )
+		
+rem Individual or combined mods
+xcopy /s /y /h /v /j "%_cDestination%\%_cFilename%(%_ca%).pak" "..\..\Builds\%_cMOD_FILENAME%*"
+xcopy /s /y /h /v /j "%_cDestination%\%_cFilename%(%_ca%).pak" "..\..\CreatedModPAKs\%_cMOD_FILENAME%*"
+
+if %_bCOMBINE_MODS% EQU 1 (
+	REM Mod pak content if combined
+	xcopy /s /y /h /v /j "..\COMBINED_CONTENT_LIST.txt" "..\..\Builds\%_cMOD_FILENAME%_content.txt*"
+	xcopy /s /y /h /v /j "..\COMBINED_CONTENT_LIST.txt" "..\..\CreatedModPAKs\%_cMOD_FILENAME%_content.txt*"
+)
+
+goto :NEXTSTEP
+
+:COMBINEDDISTINCTMODS
+xcopy /s /y /h /v /j "%_cDestination%\%_cFilename%(%_ca%).pak" "..\..\Builds\%_cFilename%(%_ca%).pak*"
+xcopy /s /y /h /v /j "%_cDestination%\%_cFilename%(%_ca%).pak" "..\..\CreatedModPAKs\%_cFilename%(%_ca%).pak*"
+
+REM Mod pak content if combined
+xcopy /s /y /h /v /j "..\COMBINED_CONTENT_LIST.txt" "..\..\Builds\%_cFilename%(%_ca%).pak_content.txt*"
+xcopy /s /y /h /v /j "..\COMBINED_CONTENT_LIST.txt" "..\..\CreatedModPAKs\%_cFilename%(%_ca%).pak_content.txt*"
+
+:NEXTSTEP
+
+echo.
+echo.-----------------------------------------------------------
+echo.^>^>^>            Scripts processed: %_bScriptCounter%
+echo.^>^>^>     Total scripts to process: %_bNumberScripts%
+echo.-----------------------------------------------------------
+echo.
+
+rem if %ERRORLEVEL% EQU 3 SET _bCOPYtoNMS=ALL
+rem if %ERRORLEVEL% EQU 2 SET _bCOPYtoNMS=SOME
+rem if %ERRORLEVEL% EQU 1 SET _bCOPYtoNMS=NONE
+
+if %_bCOPYtoNMS%==ALL goto :COPYALLtoNMS
+if %_bCOPYtoNMS%==SOME goto :COPYSOMEtoNMS
+goto :ENDIT
+
+:COPYSOMEtoNMS
+CHOICE /c:yn /m "??? Would you like to copy the created pak to your game folder and delete [DISABLEMODS.TXT] "
+if %ERRORLEVEL% EQU 2 goto :ENDIT
+
+echo.
+echo.^>^>^> Copying this PAK to NMS MOD folder...
+mkdir "%_cNMS_MODS_FOLDER%" 2>NUL
+del "%_cNMS_PCBANKS_FOLDER%DISABLEMODS.TXT" 1>NUL 2>NUL
+
+if %_bCOMBINE_MODS% EQU 2 ( goto :CopyCOMBINEDDISTINCTMODS )
+
+xcopy /s /y /h /v /j "..\..\CreatedModPAKs\%_cMOD_FILENAME%" "%_cNMS_MODS_FOLDER%*" 	
+xcopy /s /y /h /v /j "..\..\CreatedModPAKs\%_cMOD_FILENAME%_content.txt" "%_cNMS_MODS_FOLDER%*" 	
+
+:CopyCOMBINEDDISTINCTMODS
+
+xcopy /s /y /h /v /j "..\..\CreatedModPAKs\%_cFilename%(%_ca%).pak" "%_cNMS_MODS_FOLDER%*" 	
+xcopy /s /y /h /v /j "..\..\CreatedModPAKs\%_cFilename%(%_ca%).pak_content.txt" "%_cNMS_MODS_FOLDER%*" 	
+
+goto :ENDIT
+
+:COPYALLtoNMS
+if %_bNumberScripts% EQU %_bScriptCounter% (
+	echo.
+	echo.^>^>^> Done building ALL scripts
+	echo.^>^>^> Copying PAKs to NMS MOD folder...
+	mkdir "%_cNMS_MODS_FOLDER%" 2>NUL
+	del "%_cNMS_PCBANKS_FOLDER%DISABLEMODS.TXT" 1>NUL 2>NUL
+	xcopy /s /y /h /v /j "..\..\CreatedModPAKs\*.*" "%_cNMS_MODS_FOLDER%*" 	
+
+	if %_bNumberPAKs% GTR 0 (
+		xcopy /s /y /h /v /j "..\..\ModScript\*.pak" "%_cNMS_MODS_FOLDER%*"
 	)
 )
 
-	:choice
-	set /P CHOICE=Would you like to copy the mod %MOD_FILENAME% to your game folder and delete "DISABLEMODS.TXT" ? [y/n]
-	if /I "%CHOICE%" EQU "y" ( goto :COPY_TO_NMS_MODS_FOLDER )
-	if /I "%CHOICE%" EQU "n" ( goto :DONT_COPY_TO_NMS_MODS_FOLDER )
-	goto :choice
-	:COPY_TO_NMS_MODS_FOLDER
-	mkdir %NMS_MODS_FOLDER%
-	xcopy /s /y /h /v ..\Builds\%MOD_FILENAME% %NMS_MODS_FOLDER% 	
-	del %NMS_PCBANKS_FOLDER%\DISABLEMODS.TXT 
-	:DONT_COPY_TO_NMS_MODS_FOLDER
-	
+echo.-----------------------------------------------------------
+
+:ENDIT	
+
+rem ****************************  WE ARE GOING BACK TO MODBUILDER  ****************************
 cd ..
 
+REM Call :LuaEndedOkREMOVE
+REM %_mLUA% "CreateContentList.lua" "..\\" ".\\"
+REM Call :LuaEndedOk
 
+echo|set /p="[INFO]: Ending MBIN/PAK phase...">>"..\REPORT.txt"
+echo.>>"..\REPORT.txt"
+echo|set /p="[INFO]: Ended script [%_bScriptName%]">>"..\REPORT.txt"
+echo.>>"..\REPORT.txt"
+echo|set /p="[INFO]: ========================================================================================">>"..\REPORT.txt"
+echo.>>"..\REPORT.txt"
+REM echo.>>"..\REPORT.txt"
 
+goto :eof
+rem ---------- WE ARE DONE ---------------------
 
-
-
+rem --------------------------------------------
+rem subroutine section starts below
+:LuaEndedOk
+	if not EXIST  "%_bMASTER_FOLDER_PATH%\MODBUILDER\LuaEndedOK.txt" (
+		echo.>>"%_bMASTER_FOLDER_PATH%REPORT.txt"
+		echo.    [BUG]: lua.exe generated an ERROR... Please report ALL scripts AND this file to Nexus page>>"%_bMASTER_FOLDER_PATH%REPORT.txt"
+		echo.>>"%_bMASTER_FOLDER_PATH%REPORT.txt"
+	REM ) else (
+		REM if defined _mDEBUG (
+			REM echo.        LuaEndedOK
+		REM )
+	)
+	EXIT /B
+	
+rem --------------------------------------------
+:LuaEndedOkREMOVE
+	Del /f /q /s "%_bMASTER_FOLDER_PATH%\MODBUILDER\LuaEndedOK.txt" 1>NUL 2>NUL
+	EXIT /B
+	
+rem --------------------------------------------
