@@ -1,7 +1,7 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "BiomePerStarTypeChange.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_FILENAME"] 			= "BiomeForceType.pak",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -18,23 +18,23 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["MATH_OPERATION"] 		= "",  			
 							["REPLACE_TYPE"] 		= "ALL",			
 							["VALUE_MATCH"] 		= "",    
-							["VALUE_MATCH_TYPE"] 	= "",
+							["VALUE_MATCH_TYPE"] 	= "number",
 							["VALUE_CHANGE_TABLE"] 	= 					
 							{
-								{ "Lush", 		"1" },
-								{ "Toxic", 		"0" },
-								{ "Scorched", 	"0" },
-								{ "Radioactive","0" },
-								{ "Frozen", 	"0" },
-								{ "Barren", 	"0" },
-								{ "Dead", 		"0" },
-								{ "Weird", 		"0" },
-								{ "Red", 		"0" },
-								{ "Green", 		"1" },
-								{ "Blue", 		"0" },
-								{ "Test", 		"0" },
-								{ "All", 		"0" }
-							}
+								{ "Lush", 		"1" }, --6 replacements	
+								{ "Toxic", 		"0" }, --6 replacements	
+								{ "Scorched", 	"0" }, --6 replacements	
+								{ "Radioactive","0" }, --6 replacements	
+								{ "Frozen", 	"0" }, --6 replacements	
+								{ "Barren", 	"0" }, --6 replacements	
+								{ "Dead", 		"0" }, --6 replacements	
+								{ "Weird", 		"0" }, --6 replacements	
+								{ "Red", 		"0" }, --8 replacements	
+								{ "Green", 		"1" }, --8 replacements
+								{ "Blue", 		"0" }, --8 replacements	
+								{ "Test", 		"0" }, --6 replacements	
+								{ "All", 		"0" } --6 replacements	
+							} --84 global replacements
 						}
 					}
 				}		
@@ -42,3 +42,6 @@ NMS_MOD_DEFINITION_CONTAINER =
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

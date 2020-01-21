@@ -34,7 +34,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_MATCH_TYPE"] 	= "",
 							["VALUE_CHANGE_TABLE"] 	= 					
 							{
-								{"NoiseGridType",	"SuperPrimitiveRandom" }
+								{"NoiseGridType",	"SuperPrimitiveRandom" } --will overwrite the previous changes, see above
 							}
 						},
 						{
@@ -67,7 +67,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_MATCH_TYPE"] 	= "",
 							["VALUE_CHANGE_TABLE"] 	= 					
 							{
-								{"NoiseGridType",	"SuperPrimitiveRandom" }
+								{"NoiseGridType",	"SuperPrimitiveRandom" } --will overwrite the previous changes, see section above
 							}
 						},
 						{
@@ -83,7 +83,10 @@ NMS_MOD_DEFINITION_CONTAINER =
 						}							
 					}
 				}		
-			}
+			} --160 global replacements
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

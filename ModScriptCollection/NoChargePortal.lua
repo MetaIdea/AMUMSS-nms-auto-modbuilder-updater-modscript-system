@@ -14,7 +14,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL1"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL1"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -22,7 +22,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL2"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL2"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -30,7 +30,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL3"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL3"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -38,7 +38,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL4"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL4"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -46,7 +46,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL5"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL5"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -54,7 +54,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL6"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL6"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -62,7 +62,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL7"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL7"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -70,7 +70,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL8"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL8"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -78,7 +78,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL9"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL9"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -86,7 +86,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL10"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL10"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -94,7 +94,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL11"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL11"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -102,7 +102,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL12"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL12"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -110,7 +110,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL13"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL13"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -118,7 +118,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL14"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL14"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -126,7 +126,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL15"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL15"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
@@ -134,16 +134,19 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}						
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "MAINT_PORTAL16"},
+							["SPECIAL_KEY_WORDS"] = {"Id","MAINT_PORTAL16"},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinRandAmount",	"0"}, 		-- Original "100"
 								{"MaxRandAmount",	"0"} 		-- Original "100"								
 							}						
 						}
-					}
+					} --32 global replacements
 				}
 			}
 		}	
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

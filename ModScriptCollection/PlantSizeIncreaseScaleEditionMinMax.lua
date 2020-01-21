@@ -3,7 +3,7 @@ MIN_SIZE_SCALE = 5
 
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "PlantSizeIncreaseX" .. MAX_SIZE_SCALE .. ".pak",
+["MOD_FILENAME"] 			= "PlantSizeIncreaseMinMaxX" .. MAX_SIZE_SCALE .. ".pak",
 ["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
@@ -55,10 +55,13 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{ "MinScale",	MIN_SIZE_SCALE },							
 								{ "MaxScale",	MAX_SIZE_SCALE }
 							}
-						}
+						} --1602 global replacements
 					}
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

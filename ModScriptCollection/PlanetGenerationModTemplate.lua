@@ -73,10 +73,13 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{ "GreenWeather", "0" },
 								{ "BlueWeather", "0" }								
 							}
-						}						
+						} --483 global replacements						
 					}
 				}		
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

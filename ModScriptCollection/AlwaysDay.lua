@@ -1,7 +1,7 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
 ["MOD_FILENAME"] 			= "AlwaysDay.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",  			--version on first mod release
 ["MODIFICATIONS"] 			= 
 	{
@@ -18,14 +18,15 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"MinNightFade",				"1.0"}, -- Original "0.62"  always leave the orig. value as a reference
-								{"MaxNightFade",				"1.0"}	-- Original "0.68"
-							}
-						} --for multiple EXML changes with PRECEDING_KEY_WORDS copy this chunk below and add a comma behind this line here
+								{"MaxNightFade",				"1.0"},	-- Original "0.68"
+							} --2 global replacements	
+						}, --for multiple EXML changes with PRECEDING_KEY_WORDS copy this chunk below and add a comma behind this line here
 					}
-				} --for multiple MBIN sources: copy this chunk below and add a comma behind this line here
+				}, --for multiple MBIN sources: copy this chunk below and add a comma behind this line here
 			}
-		} --for multiple pak sources: copy this chunk below and add a comma behind this line here
+		}, --for multiple pak sources: copy this chunk below and add a comma behind this line here
 	}	
 }
-
-
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

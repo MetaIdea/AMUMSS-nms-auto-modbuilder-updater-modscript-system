@@ -1,9 +1,9 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
 ["MOD_FILENAME"] 			= "ForceVRMode.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
-["MODIFICATIONS"] 			= 
+["MODIFICATIONS"] 			=                                       -- VR COULD WORK OR NOT, CANNOT TEST!
 	{
 		{
 			["PAK_FILE_SOURCE"] 	= "NMSARC.59B126E2.pak",
@@ -20,9 +20,12 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{"PipelineFile",	"PIPELINES/PIPELINEDEFERREDVR.BIN"} 	-- Original "PIPELINES/PIPELINEDEFERRED.BIN"
 							}
 						}
-					}
+					} --1 global replacements
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

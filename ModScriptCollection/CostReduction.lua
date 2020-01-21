@@ -3,7 +3,7 @@ COST_MULTIPLIER = "0.5"
 NMS_MOD_DEFINITION_CONTAINER = 
 {
 ["MOD_FILENAME"] 			= "CostReduction.pak", 
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -25,7 +25,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							{
 								{"Amount",	COST_MULTIPLIER }
 							}
-						},
+						}, --177 replacements
 						{
 							["PRECEDING_KEY_WORDS"] = "",  --GcCostMoney.xml
 							["MATH_OPERATION"] 		= "*",
@@ -36,10 +36,13 @@ NMS_MOD_DEFINITION_CONTAINER =
 							{
 								{"Cost",	COST_MULTIPLIER }
 							}
-						}
+						}, --27 replacements
 					}
-				}	
+				},	
 			}
-		}
+		}, --204 global replacements
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

@@ -1,5 +1,8 @@
+--UNFINISHED - EXPERIMENT
+--MAYBE "WHAT NOT TO DO"
+
 TerrainEditBeamMaxRange_Multiply = 3
-TerrainEditCost_Multiply 		 = 0  --zero cost
+TerrainEditCostFactor 		 = 0  --zero cost
 
 NMS_MOD_DEFINITION_CONTAINER = 
 {
@@ -16,17 +19,19 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = { "SubtractSizes", "0.8", "1.2" },
+							["PRECEDING_KEY_WORDS"] = {"TerrainEditing","SubtractSizes",},
+							["LINE_OFFSET"] 		    = "+3",	      --can be missing (if not used) or +/- an integer number of lines, see Script_Rules.txt
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",			"1.8"	} -- Original "1.2"
+								{"IGNORE",			"4.0"	}, -- Original "3.2"
 							}	
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = { "SubtractSizes", "0.8", "1.2", "1.6"},
+							["PRECEDING_KEY_WORDS"] = {"TerrainEditing","UndoEditSize",},
+							["LINE_OFFSET"] 		    = "+3",	      --can be missing (if not used) or +/- an integer number of lines, see Script_Rules.txt
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",			"4.0"		} -- Original "1.6"
+								{"IGNORE",			"4.0"		}, -- Original "1.2"
 							}	
 						},
 						{
@@ -34,13 +39,16 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"TerrainEditBeamMaxRange",			TerrainEditBeamMaxRange_Multiply	}, 		-- Original "40"
-								{"TerrainEditsNormalCostFactor",	TerrainEditCost_Multiply			}, 		-- Original "0.4"
-								{"TerrainEditsSurvivalCostFactor",	TerrainEditCost_Multiply			}, 		-- Original "2"
+								{"TerrainEditsNormalCostFactor",	TerrainEditCostFactor			}, 		-- Original "0.4"
+								{"TerrainEditsSurvivalCostFactor",	TerrainEditCostFactor			}, 		-- Original "2"
 							}	
 						}
-					}
+					} --5 global replacements
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

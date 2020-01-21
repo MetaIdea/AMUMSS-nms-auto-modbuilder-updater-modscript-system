@@ -1,7 +1,7 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "NoRandomSentinels-extended.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_FILENAME"] 			= "NoRandomSentinels_extended.pak",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -46,7 +46,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "DRONE",
+							["SPECIAL_KEY_WORDS"] = {"ID","DRONE",},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"Filename",	""} 		-- Original "MODELS/COMMON/ROBOTS/DRONE.SCENE.MBIN"
@@ -83,10 +83,10 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "DRONE",
+							["SPECIAL_KEY_WORDS"] = {"Id","DRONE",},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{ "MoveArea", 		"0" }, -- Original "Air"
+								{ "MoveArea", 		"0" }, -- Original "Air"  --will not be replaced, not a matching_type
 								{ "MinScale", 		"0" }, -- Original "1"
 								{ "MaxScale", 		"0" }, -- Original "1"
 								{ "MoveRange", 		"0" }, -- Original "100"
@@ -98,7 +98,10 @@ NMS_MOD_DEFINITION_CONTAINER =
 						}
 					}
 				}
-			}
+			} --28 global replacements
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

@@ -7,7 +7,7 @@ BIOME_PROBABILITY_MULTIPLIER = 2
 NMS_MOD_DEFINITION_CONTAINER = 
 {
 ["MOD_FILENAME"] 			= "CreatureSizeAndSpawnRateIncrease.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -26,13 +26,13 @@ NMS_MOD_DEFINITION_CONTAINER =
 							["VALUE_MATCH"] 		= "",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"MinScale",		CREATURE_SCALE_INCREASE }, 	-- Original 1							
-								{"MaxScale",		CREATURE_SCALE_INCREASE }, 	-- Original 1
-								{"MinCount",		CREATURE_COUNT_INCREASE }, 	-- Original 1							
-								{"MaxCount",		CREATURE_COUNT_INCREASE } 	-- Original 1							
+								{"MinScale",		CREATURE_SCALE_INCREASE }, 	-- 38 replacements						
+								{"MaxScale",		CREATURE_SCALE_INCREASE }, 	-- 38 replacements
+								{"MinCount",		CREATURE_COUNT_INCREASE }, 	-- 13 replacements
+								{"MaxCount",		CREATURE_COUNT_INCREASE }, 	-- 13 replacements
 							}
-						}
-					}
+						},
+					} --102 replacements
 				},
 				{
 					["MBIN_FILE_SOURCE"] 	= 
@@ -88,10 +88,10 @@ NMS_MOD_DEFINITION_CONTAINER =
 								--{"FractionActiveInDay", 		"1" },
 								--{"FractionActiveInNight", 		"1" },
 								--{"ProbabilityOfBeingEnabled", 	"1" },
-								--{"IncreasedSpawnDistance", 		"2" }					
+								--{"IncreasedSpawnDistance", 		"2" },					
 							}
-						}
-					}
+						},
+					} --306 replacements
 				},
 				{
 					["MBIN_FILE_SOURCE"] 	= "METADATA\SIMULATION\ECOSYSTEM\CREATUREROLEDESCRIPTIONTABLE.MBIN",
@@ -107,25 +107,28 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{"Dead",		BIOME_PROBABILITY_MULTIPLIER },					
 								{"Low",			BIOME_PROBABILITY_MULTIPLIER },
 								{"Mid",			BIOME_PROBABILITY_MULTIPLIER },							
-								{"Full",		BIOME_PROBABILITY_MULTIPLIER }						
+								{"Full",		BIOME_PROBABILITY_MULTIPLIER },						
 							}
 						},
 						{
 							["PRECEDING_KEY_WORDS"] = "BiomeProbability",
-							["MATH_OPERATION"] 		= "=",
+							-- ["MATH_OPERATION"] 		= "=", --not needed, not allowed, would generate WARNINGs
 							["REPLACE_TYPE"] 		= "ALL",
-							["VALUE_MATCH"] 		= "0",
+							["VALUE_MATCH"] 		= "0", --make ALL that are "0" equal(=) to "1"
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"Dead",		"1" },
 								{"Low",			"1" },
 								{"Mid",			"1" },		
-								{"Full",		"1" }
+								{"Full",		"1" },
 							}
-						}						
-					}
-				}
+						},
+					} --214 replacements
+				},
 			}
-		}
+		}, --622 global replacements
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

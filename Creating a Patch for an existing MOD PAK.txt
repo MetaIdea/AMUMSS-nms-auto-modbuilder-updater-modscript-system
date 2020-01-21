@@ -1,0 +1,44 @@
+How to Create a Patch for an existing MOD PAK ?
+
+Background:
+	Mods in NMS are loaded from top to bottom (when listed in alphabetical order).
+	Lower mods that modify the same file in any above mod will win all changes to that file
+
+So, to make a Patch for a mod named xyz.pak, you could do:
+	1. Extract from that mod PAK the file you want to change, it gives you a .MBIN
+	2. Decompile the .MBIN to .EXML format using the appropriate MBINCompiler version
+	3. Find what you want to change and make these changes by hand to the .EXML file
+	4. Recompile the .EXML file to .MBIN using the "latest" MBINCompiler version
+	5. Pack this new .MBIN file to a new .PAK (name it as you like) as "ZZZPatch_xyz.pak"
+	6. Make sure the name is lower than the original PAK file in ascending alphabetical order
+		so it load later
+	7. Place both files into your NMS MODS folder
+	8. Verify that the DISABLEMODS.TXT file in PCBANKS folder is still deleted
+	9. Enjoy
+
+	Using the .EXML file from the mod xyz.pak ensure that most, if not all, of the changes made by the MOD
+	will be saved and the MOD will continue to work as intended.
+	In using the ZZZPatch_xyz.pak, only if you changed something that affects that MOD, will that change how the MOD works
+	otherwise the MOD AND YOUR CHANGES will work as planned by you.
+
+MODBUILDER can help in creating the "ZZZPatch_xyz.pak"
+	A. Create a simple "ZZZMyScript.lua" script with the changes you want to make to the .EXML file (covers steps 1., 2. and 3. above)
+		***** We have included plenty of examples and a Script_Rules.txt file to help in creating a script *****
+		Note: "ZZZ" in the name tryies to make it load ~last in MODS. Change the name to suit our paks
+	B. Copy the script AND the MOD PAK you want to patch to the ModScript folder (and steps 4. thru 8. are handled by MODBUILDER)
+		Note: Having more than one pak in ModScript will NOT combine both paks, only the last one will combine
+		      if it mofidies the same .EXML file
+		Note: A future version will probably be able to handle correctly multiple paks in ModScript
+	C. MODBUILDER will attempt to use your MBIN_FILE_SOURCE named in the script by searching for it in the mod PAK
+	  *** If found, that will preserve the mod PAK changes UNLESS you have changed the exact same values with your script ***
+	  *** which could be what you want to do... ***
+	D. A new mod PAK will be created in the CreatedModPAKs folder (give it the name you want in the script)
+		or after by renaming it
+	E. Use that new PAK in 7. above if you did not let MODBUILDER copy it for you
+	F. Verify that the DISABLEMODS.TXT file in PCBANKS folder is still deleted if you did not let MODBUILDER delete it for you
+	G. Enjoy
+	
+NOTES: * The name of the lua script "ZZZMyScript.lua" can be changed.
+       * Any other script can be put in ModScript at the same time, they will all be COMBINED in the resulting PAK
+       * The name of the resulting pak "ZZZPatch_xyz.pak" can be changed, but should be at the BOTTOM of the NMS MODS folder
+	     for optimum effect

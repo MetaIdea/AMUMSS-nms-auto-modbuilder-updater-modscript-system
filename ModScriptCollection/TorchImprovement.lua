@@ -23,9 +23,12 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{"TorchOffsetZ",					"-1"}		-- Original "-0.5"								
 							}
 						}
-					}
+					} --4 global replacements
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

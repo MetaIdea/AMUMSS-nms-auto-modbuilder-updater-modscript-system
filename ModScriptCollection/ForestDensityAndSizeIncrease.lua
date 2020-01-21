@@ -62,7 +62,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "FOREST",
+							["SPECIAL_KEY_WORDS"] = {"Name","FOREST",},
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "",
 							["VALUE_MATCH"] 		= "", 
@@ -73,18 +73,18 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "GRASS",
+							["SPECIAL_KEY_WORDS"] = {"Name","GRASS",},
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "",
 							["VALUE_MATCH"] 		= "", 
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"PatchSize",				FOREST_SIZE }, 		-- Original "100"
+								{"PatchSize",				FOREST_SIZE }, 		-- Original "4"
 								{"RegionScale",				FOREST_SIZE	}		-- Original "5"
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "BIOMEPLANT",
+							["SPECIAL_KEY_WORDS"] = {"Name","BIOMEPLANT",},
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "",
 							["VALUE_MATCH"] 		= "", 
@@ -94,9 +94,12 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{"RegionScale",				FOREST_SIZE	}		-- Original "0.1"
 							}
 						}
-					}
+					} --807 global replacements
 				}				
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

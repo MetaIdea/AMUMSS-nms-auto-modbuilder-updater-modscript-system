@@ -45,58 +45,61 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "LodDistances",
-							["MATH_OPERATION"] 		= "*",
-							["REPLACE_TYPE"] 		= "ALL",
-							["LINE_OFFSET"] 		= "+1",
+							["PRECEDING_KEY_WORDS"] = "",   --if we wanted to replace only in a group, we would put a key_word here
+							["MATH_OPERATION"] 		= "*",    --multiply the value at the offset by LOD_DISTANCE_MULTIPLIER
+							["REPLACE_TYPE"] 		= "ALL",    --ALL means all the file since we have no PRECEDING_KEY_WORDS
+							["LINE_OFFSET"] 		= "+1",     --one line down
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",	LOD_DISTANCE_MULTIPLIER} --we need "IGNORE" because there is no property in this line only a value
+								{"LodDistances",	LOD_DISTANCE_MULTIPLIER} --"LodDistances" is the anchor property to be used by LINE_OFFSET
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "LodDistances",
+							["PRECEDING_KEY_WORDS"] = "",
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "ALL",
 							["LINE_OFFSET"] 		= "+2",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",	LOD_DISTANCE_MULTIPLIER}
+								{"LodDistances",	LOD_DISTANCE_MULTIPLIER}
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "LodDistances",
+							["PRECEDING_KEY_WORDS"] = "",
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "ALL",
 							["LINE_OFFSET"] 		= "+3",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",	LOD_DISTANCE_MULTIPLIER}
+								{"LodDistances",	LOD_DISTANCE_MULTIPLIER}
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "LodDistances",
+							["PRECEDING_KEY_WORDS"] = "",
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "ALL",
 							["LINE_OFFSET"] 		= "+4",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",	LOD_DISTANCE_MULTIPLIER}
+								{"LodDistances",	LOD_DISTANCE_MULTIPLIER}
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "LodDistances",
+							["PRECEDING_KEY_WORDS"] = "",
 							["MATH_OPERATION"] 		= "*",
 							["REPLACE_TYPE"] 		= "ALL",
 							["LINE_OFFSET"] 		= "+5",
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
-								{"IGNORE",	LOD_DISTANCE_MULTIPLIER}
+								{"LodDistances",	LOD_DISTANCE_MULTIPLIER}
 							}
 						}						
-					}
+					} --4005 global replacements
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

@@ -1,7 +1,7 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
 ["MOD_FILENAME"] 			= "DenserForests.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -14,7 +14,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
-							["PRECEDING_KEY_WORDS"] = "FOREST",
+							["SPECIAL_KEY_WORDS"] = {"Name","FOREST",},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"320"}, 	-- Original "64"
@@ -22,7 +22,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "GRASS",
+							["SPECIAL_KEY_WORDS"] = {"Name","GRASS",},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"100"}, 	-- Original "100"
@@ -30,16 +30,19 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = "BIOMEPLANT",
+							["SPECIAL_KEY_WORDS"] = {"Name","BIOMEPLANT",},
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"PatchSize",				"550"}, 	-- Original "550"
 								{"RegionScale",				"0.1"}		-- Original "0.1"
 							}
-						}
+						} --6 global replacements
 					}
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

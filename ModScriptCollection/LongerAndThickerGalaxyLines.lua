@@ -12,10 +12,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 			["MBIN_CHANGE_TABLE"] 	= 
 			{ 
 				{
-					["MBIN_FILE_SOURCE"] 	= 
-					{
-						"MODELS\EFFECTS\LINES\LINERENDERERGALAXY.SCENE.MBIN"			
-					},
+					["MBIN_FILE_SOURCE"] 	= {"MODELS\EFFECTS\LINES\LINERENDERERGALAXY.SCENE.MBIN"},
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						--{
@@ -23,7 +20,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							--["VALUE_CHANGE_TABLE"] 	= {{"Value",	"MATERIALS/GALAXYLINE3D.MATERIAL.MBIN"}} -- Original "MATERIALS/LINE3D.MATERIAL.MBIN"
 						--},
 						{
-							["PRECEDING_KEY_WORDS"] = "MAXNUMLINES",
+							["SPECIAL_KEY_WORDS"] = {"Name","MAXNUMLINES",},
 							["VALUE_CHANGE_TABLE"] 	= {{"Value",	"1024"}} -- Original "512"
 						}
 					}
@@ -35,15 +32,13 @@ NMS_MOD_DEFINITION_CONTAINER =
 			["MBIN_CHANGE_TABLE"] 	= 
 			{ 
 				{
-					["MBIN_FILE_SOURCE"] 	= 
-					{
-						"MATERIALS\LINE3D.MATERIAL.MBIN"			
-					},
+					["MBIN_FILE_SOURCE"] 	= {"MATERIALS\LINE3D.MATERIAL.MBIN"},
 					["EXML_CHANGE_TABLE"] 	= 
 					{
 						{
 							["PRECEDING_KEY_WORDS"] = "",
-							["VALUE_CHANGE_TABLE"] 	= {{"Shader",	"SHADERS/LINE3D.SHADER.BIN"}} -- Original "SHADERS/LINE3D.SHADER.BIN" -- Change "SHADERS/GALAXYLINE3D.SHADER.BIN"
+							["VALUE_CHANGE_TABLE"] 	= {{"Shader",	"SHADERS/LINE3D.SHADER.BIN"}} -- Original "SHADERS/LINE3D.SHADER.BIN" 
+                    -- You need to create a "SHADERS/GALAXYLINE3D.SHADER.BIN" (or whatever you want as name) and change this value
 						}					
 					}
 				}				
@@ -74,5 +69,8 @@ NMS_MOD_DEFINITION_CONTAINER =
 				}
 			}
 		}		
-	}	
+	}	 --9 global replacements
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

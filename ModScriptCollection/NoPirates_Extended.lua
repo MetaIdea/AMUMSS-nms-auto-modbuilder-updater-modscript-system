@@ -1,7 +1,7 @@
 NMS_MOD_DEFINITION_CONTAINER = 
 {
-["MOD_FILENAME"] 			= "NoPirates-extended.pak",
-["MOD_AUTHOR"]				= "Mjjstal",
+["MOD_FILENAME"] 			= "NoPirates_extended.pak",
+["MOD_AUTHOR"]				= "Mjjstral",
 ["NMS_VERSION"]				= "1.77",
 ["MODIFICATIONS"] 			= 
 	{
@@ -55,7 +55,7 @@ NMS_MOD_DEFINITION_CONTAINER =
 							}
 						},
 						{
-							["PRECEDING_KEY_WORDS"] = {"PirateSpawns", "ChildSpawns", "Count" },
+							["PRECEDING_KEY_WORDS"] = {"PirateSpawns", "GcAIShipSpawnData.xml", "GcAIShipSpawnData.xml", "Count" },
 							["VALUE_CHANGE_TABLE"] 	= 
 							{
 								{"x",	"0"}, 		-- Original "1"
@@ -66,5 +66,8 @@ NMS_MOD_DEFINITION_CONTAINER =
 				}
 			}
 		}
-	}	
+	} --7 global replacements	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE

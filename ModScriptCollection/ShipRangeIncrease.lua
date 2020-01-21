@@ -20,9 +20,12 @@ NMS_MOD_DEFINITION_CONTAINER =
 								{"ShipInteractRadius",					"500"}  --Original "50"						
 							}
 						}
-					}
+					} --1 global replacements
 				}
 			}
 		}
 	}	
 }
+--NOTE: ANYTHING NOT in table NMS_MOD_DEFINITION_CONTAINER IS IGNORED AFTER THE SCRIPT IS LOADED
+--IT IS BETTER TO ADD THINGS AT THE TOP IF YOU NEED TO
+--DON'T ADD ANYTHING PASS THIS POINT HERE
