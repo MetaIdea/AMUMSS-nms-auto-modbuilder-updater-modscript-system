@@ -12,6 +12,45 @@ SETLOCAL EnableDelayedExpansion ENABLEEXTENSIONS
 
 set _mLUA="lua.exe"
 
+:ReadArg
+if NOT "%1"=="" (
+    SET _bIsUsingArgs=y	
+    if "%1"=="-includeExtraFiles" (		
+        SET _bIncludeExtraFilesArg=y
+    )  
+    if "%1"=="-rebuildMod" (
+        SET _bRebuildModArg=y
+    ) 
+	if "%1"=="-simpleCombine" (
+        SET _bSimpleCombineArg=y
+    )
+	if "%1"=="-compositeCombine" (
+        SET _bCompositeCombineArg=y
+    )
+	if "%1"=="-nummericSuffixCombine" (
+        SET _bNummericSuffixCombineArg=y
+    )
+	if "%1"=="-copy" (
+        SET _bCopyAllArg=y
+    )
+	if "%1"=="-copySome" (
+        SET _bCopySomeArg=y
+    )
+	if "%1"=="-updateMbinCompiler" (
+        SET _bUpdateMbinCompilerArg=y
+    )
+	if "%1"=="-checkForConflict" (
+        SET _bCheckForConflictArg=y
+    )
+	if "%1"=="-recreatePakList" (
+        SET _bRecreatePakListArg=y
+    )
+	if "%1"=="-recreateMapFileTrees" (
+        SET _bRecreateMapFileTreesArg=y
+    )
+	SHIFT /1
+    GOTO :ReadArg
+)
 rem -------------  testing for administrator  -------------------------------
 set _bMyPath=%CD%
 set _bSystem32=%SYSTEMROOT%\system32
@@ -227,12 +266,17 @@ FOR /r "%~dp0\ModExtraFilesToInclude" %%G in (*.*) do (
 )
 if %_bExtraFiles% EQU 0 goto :NO_EXTRAFILES
 
+if defined _bIsUsingArgs (
+if defined _bIncludeExtraFilesArg ( SET _bExtraFilesInPAK=y) 
+GOTO :SKIPCHOICE_EXTRAFILES
+)
 echo.
 echo.^>^>^> There are Extra Files in the ModExtraFilesToInclude folder.  If you INCLUDE them...
 echo.^>^>^>      *****  Remember, these files will OVERWRITE any existing ones in the created PAK  *****
 CHOICE /c:YN /m "??? Do you want to include them in the created PAK "
 if %ERRORLEVEL% EQU 2 goto :NO_EXTRAFILES
 if %ERRORLEVEL% EQU 1 SET _bExtraFilesInPAK=y
+:SKIPCHOICE_EXTRAFILES
 
 :NO_EXTRAFILES
 rem --------------  end Check if ExtraFilesToInclude present ------------------------------
@@ -306,12 +350,17 @@ if %_bNumberScripts% EQU 0 (
 	goto :BYPASSPAKEXTRACT
 )
 
+if defined _bIsUsingArgs (
+if defined _bRebuildModArg( SET _bBuildMODpak=y ) else ( SET _bNumberScripts=0 )
+GOTO :SKIPCHOICE_REBUILDMOD
+)
 echo.-----------------------------------------------------------
 echo.
 echo.^>^>^> At least one script was found in the pak
 CHOICE /c:YN /m "??? Do you want to rebuild the MOD pak using that script "
 if %ERRORLEVEL% EQU 2 SET _bNumberScripts=0
 if %ERRORLEVEL% EQU 1 SET _bBuildMODpak=y
+:SKIPCHOICE_REBUILDMOD
 
 if defined _bBuildMODpak (
 	set _bNoMod=
@@ -341,6 +390,21 @@ if defined _bNoMod goto :EXECUTE
 if defined _mSIMPLE goto :SIMPLE_MODE 
 if %_bNumberScripts% EQU 1 goto :SIMPLE_MODE
 
+if defined _bIsUsingArgs (
+if defined _bSimpleCombineArg (
+	 SET _bCOMBINE_MODS=1
+	 goto :SKIPCHOICE_COPY
+)
+if defined _bNummericSuffixCombineArg (
+	 SET _bCOMBINE_MODS=2
+	 goto :SKIPCHOICE_COPY
+)
+if defined _bCompositeCombineArg (
+	 SET _bCOMBINE_MODS=3	 
+	 goto :SKIPCHOICE_COPY
+)
+goto :SKIPCHOICE_COMBINE
+)
 echo.
 echo.^>^>^> INDIVIDUAL PAKs may or may not work together depending on the EXML files they change
 echo.    If they modify the same original EXML files, the last one loaded will win and the other changes will be lost...
@@ -374,13 +438,27 @@ CHOICE /c:yn /m "??? Do you want to use a NUMERIC suffix[Y] or the current DATE-
 if %ERRORLEVEL% EQU 2 SET _bCOMBINE_MODS=1
 if %ERRORLEVEL% EQU 1 SET _bCOMBINE_MODS=2
 goto :CONTINUE_EXECUTION2
+:SKIPCHOICE_COMBINE
 
 :CONTINUE_EXECUTION1
+if defined _bIsUsingArgs (
+if defined _bCopyAllArg (
+	 SET _bCOPYtoNMS=ALL
+	 goto :SKIPCHOICE_COPY	 
+)
+if defined _bCopySomeArg (
+	 SET _bCOPYtoNMS=SOME
+	 goto :SKIPCHOICE_COPY	 
+)
+SET _bCOPYtoNMS=NONE
+goto :SKIPCHOICE_COPY
+)
 echo.
 CHOICE /c:NSA /m "??? Would you like or [N]ot to COPY [S]ome or [A]ll Created Mod PAKs to your game folder and DELETE [DISABLEMODS.TXT] "
 if %ERRORLEVEL% EQU 3 SET _bCOPYtoNMS=ALL
 if %ERRORLEVEL% EQU 2 SET _bCOPYtoNMS=SOME
 if %ERRORLEVEL% EQU 1 SET _bCOPYtoNMS=NONE
+:SKIPCHOICE_COPY
 
 :CONTINUE_EXECUTION2
 if %_bCOMBINE_MODS% NEQ 0 SET _bCOPYtoNMS=SOME
@@ -388,11 +466,24 @@ goto :EXECUTE
 
 :SIMPLE_MODE
 if %_bNumberScripts% EQU 0 goto :EXECUTE
+if defined _bIsUsingArgs (
+if defined _bCopyAllArg (
+	 SET _bCOPYtoNMS=ALL
+	 goto :SKIPCHOICE_SIMPLECOPY	 
+)
+if defined _bCopySomeArg (
+	 SET _bCOPYtoNMS=ALL
+	 goto :SKIPCHOICE_SIMPLECOPY	 
+)
+SET _bCOPYtoNMS=NONE
+goto :SKIPCHOICE_SIMPLECOPY
+)
 echo.
 CHOICE /c:YN /m "??? Would you like to COPY the created Mod PAKs to your game folder and DELETE [DISABLEMODS.TXT] "
 if %ERRORLEVEL% EQU 2 SET _bCOPYtoNMS=NONE
 if %ERRORLEVEL% EQU 1 SET _bCOPYtoNMS=ALL
 rem -------- user options end here -----------
+:SKIPCHOICE_SIMPLECOPY
 
 :EXECUTE
 
@@ -437,6 +528,14 @@ if defined _mSIMPLE goto :SIMPLE_MODE1
 echo.
 if not exist "MBINCompiler.exe" CALL MBINCompilerDownloader.bat & goto :CONTINUE_EXECUTION2
 
+if defined _bIsUsingArgs (
+	if defined _bUpdateMbinCompilerArg ( 
+		goto :SKIPCHOICE_UPDATECOMPILER
+		) else (
+		goto :CONTINUE_EXECUTION2
+)
+GOTO :SKIPCHOICE_UPDATECOMPILER
+)
 Del /f /q /s "MBINCompilerVersion.txt" 1>NUL 2>NUL
 MBINCompiler.exe version -q >>MBINCompilerVersion.txt
 set /p _bMBINCompilerVersion=<MBINCompilerVersion.txt
@@ -445,6 +544,7 @@ echo.^>^>^> Your current MBINCompiler is version: %_bMBINCompilerVersion%
 echo.
 CHOICE /c:yn /t 30 /d y /m "??? Do you need to UPDATE MBINCompiler.exe, (default Y in 30 seconds)"
 if %ERRORLEVEL% EQU 2 goto :CONTINUE_EXECUTION2
+:SKIPCHOICE_UPDATECOMPILER
 
 :SIMPLE_MODE1
 echo.
@@ -468,10 +568,15 @@ if defined _mVERBOSE (
 )
 
 rem -------------   Conflict detection or not?  -------------
+if defined _bIsUsingArgs (
+if defined _bCheckForConflictArg ( set _bCheckMODSconflicts= 1 ) else ( set _bCheckMODSconflicts= 2 )
+GOTO :SKIPCHOICE_CHECKFORCONFLICT
+)
 echo.
 CHOICE /c:yn /m "??? Would you like to check your NMS MODS for conflict?"
 if %ERRORLEVEL% EQU 2 set _bCheckMODSconflicts=2
 if %ERRORLEVEL% EQU 1 set _bCheckMODSconflicts=1
+:SKIPCHOICE_CHECKFORCONFLICT
 rem -------------   end Conflict detection or not?  -------------
 
 rem **************************  start PAK_LISTs creation section  ********************************
@@ -502,11 +607,16 @@ goto :NoNeedToAsk
 
 :Ask
 if not exist "..\DEBUG.txt" goto :NoNeedToAsk
+if defined _bIsUsingArgs (
+if defined _bRecreatePakListArg ( set _bRecreatePAKList=1) else ( set _bRecreatePAKList=2)
+GOTO :SKIPCHOICE_RECREATEPAKLIST
+)
 echo.
 REM echo.^>^>^> If there was a NMS update, it is recommended to recreate this list
 CHOICE /c:yn /m "??? Do you want to RECREATE the NMS PAK file list"
 if %ERRORLEVEL% EQU 2 set _bRecreatePAKList=2
 if %ERRORLEVEL% EQU 1 set _bRecreatePAKList=1
+:SKIPCHOICE_RECREATEPAKLIST
 
 if %_bRecreatePAKList% EQU 1 (
 	CALL PSARC_LIST_PAKS.BAT
@@ -538,8 +648,13 @@ if defined _mWbertro (
 	goto :START
 )
 
+if defined _bIsUsingArgs (
+if defined _bRecreateMapFileTreesArg ( set _bRecreateMapFileTrees=1) 	
+GOTO :SKIPCHOICE_RECREATEMAPLIST
+)
 CHOICE /c:yn /m "??? Do you want to (RE)CREATE the MapFileTrees files DURING script processing"
 if %ERRORLEVEL% EQU 1 (set _bRecreateMapFileTrees=1)
+:SKIPCHOICE_RECREATEMAPLIST
 rem **************************  end MapFileTrees creation section  ********************************
 
 :START
@@ -694,6 +809,7 @@ if %_bNumberPAKs% GTR 0 (
 echo.---------------------------------------------------------
 if defined _mSIMPLE goto :SIMPLE_MODE2 
 if defined _min_subprocess goto :SIMPLE_MODE2 
+if defined _bIsUsingArgs goto :SIMPLE_MODE2
 timeout /t 5
 
 :SIMPLE_MODE2 
