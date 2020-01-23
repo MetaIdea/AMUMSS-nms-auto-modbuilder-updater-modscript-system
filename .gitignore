@@ -31,3 +31,6 @@ ModScript/**
 !ModScript/empty
 ModExtraFilesToInclude/**
 !ModExtraFilesToInclude/empty
+MODBUILDER/MBINCompilerDownloader/temp.txt
+MODBUILDER/MBINCompiler.exe
+MODBUILDER/MBINCompilerDownloader/MBINCompiler.exe

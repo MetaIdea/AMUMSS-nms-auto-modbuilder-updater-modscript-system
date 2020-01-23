@@ -1,1 +1,0 @@
-https://github.com/monkeyman192/MBINCompiler/releases/download/v2.24.0-pre2/MBINCompiler.exe
