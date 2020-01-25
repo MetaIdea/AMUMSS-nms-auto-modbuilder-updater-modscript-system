@@ -1,4 +1,4 @@
-REM echo off
+@echo off
 setlocal EnableDelayedExpansion
 set "args="
 for /f "tokens=1,2 delims==" %%G in (options.txt) do (

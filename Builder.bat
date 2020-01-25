@@ -29,7 +29,7 @@ set _bMyPath=
 set _bSystem32=
 set _bADMIN=
 rem -------------  end testing for administrator  -------------------------------
-
+cd /D "%~dp0"
 rem -------------  reding arguments  -------------------------------
 rem making the variables made inside the read argument section local
 SETLOCAL EnableDelayedExpansion
