@@ -9,6 +9,7 @@ MODBUILDER/MBINCompilerVersion.txt
 MODBUILDER/OnlyOneScript.txt
 MODBUILDER/PAK_LIST_CREATED.txt
 MODBUILDER/pak_list.txt
+.vs/
 Builds/
 CreatedModPAKs/
 EXML_Helper/

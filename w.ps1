@@ -5,6 +5,7 @@ function Get-CurrentDirectory {
 }
 $pathToMonitor = Join-Path (Get-CurrentDirectory) "ModScript"
 $watcher = New-Object System.IO.FileSystemWatcher
+$watcher.Filter = "*.lua"
 $watcher.Path = $pathToMonitor
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true

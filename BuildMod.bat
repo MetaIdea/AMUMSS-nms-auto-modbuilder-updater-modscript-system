@@ -11,46 +11,6 @@ rem so we can easily list them all like this on error, if needed: set _b
 SETLOCAL EnableDelayedExpansion ENABLEEXTENSIONS
 
 set _mLUA="lua.exe"
-
-:ReadArg
-if NOT "%1"=="" (
-    SET _bIsUsingArgs=y	
-    if "%1"=="-includeExtraFiles" (		
-        SET _bIncludeExtraFilesArg=y
-    )  
-    if "%1"=="-rebuildMod" (
-        SET _bRebuildModArg=y
-    ) 
-	if "%1"=="-simpleCombine" (
-        SET _bSimpleCombineArg=y
-    )
-	if "%1"=="-compositeCombine" (
-        SET _bCompositeCombineArg=y
-    )
-	if "%1"=="-nummericSuffixCombine" (
-        SET _bNummericSuffixCombineArg=y
-    )
-	if "%1"=="-copy" (
-        SET _bCopyAllArg=y
-    )
-	if "%1"=="-copySome" (
-        SET _bCopySomeArg=y
-    )
-	if "%1"=="-updateMbinCompiler" (
-        SET _bUpdateMbinCompilerArg=y
-    )
-	if "%1"=="-checkForConflict" (
-        SET _bCheckForConflictArg=y
-    )
-	if "%1"=="-recreatePakList" (
-        SET _bRecreatePakListArg=y
-    )
-	if "%1"=="-recreateMapFileTrees" (
-        SET _bRecreateMapFileTreesArg=y
-    )
-	SHIFT /1
-    GOTO :ReadArg
-)
 rem -------------  testing for administrator  -------------------------------
 set _bMyPath=%CD%
 set _bSystem32=%SYSTEMROOT%\system32
@@ -69,6 +29,149 @@ set _bMyPath=
 set _bSystem32=
 set _bADMIN=
 rem -------------  end testing for administrator  -------------------------------
+
+rem -------------  reding arguments  -------------------------------
+rem making the variables made inside the read argument section local
+SETLOCAL EnableDelayedExpansion
+
+REM These are the value types. we use them to define all the possible input values for each type separated by commas.
+REM We also have a type identified by the word `value` (currently not used but implemented) for the args that don't have restriction on their input. 
+REM Do not remove the trailing commas. 
+set "flagEnum=ask,y,n,true,false," 
+set "combineModeEnum=ask,none,simple,composite,numericSuffix,"
+set "copyModeEnum=ask,none,all,some,"
+
+REM all the arguments are defined here using this format: -argumentName:[defaultValue]?[valueTypeIdentifier]
+set "args=-includeExtraFiles:ask?flag -rebuildMod:ask?flag -combine:ask?combineMode -copy:ask?copyMode -updateMBINCompiler:ask?flag -checkForConflicts:ask?flag -recreatePakList:ask?flag -recreateMapFileTrees:ask?flag"
+
+
+
+REM replace all the `?` with "`" to allow our for loops to work properly.
+REM see: https://stackoverflow.com/questions/51644168
+set "args=%args:?=`%"
+
+
+
+for %%A in (%args%) do (
+  for /f "tokens=1,2,* delims=:`" %%G in ("%%A") do (
+	rem Creating variables for each argument        
+    set "%%G=%%~H"
+  )
+)
+
+:ReadArg
+if not "%~1"=="" ( 
+  set "test=!args:*%~1:=!"
+  set "search=!test:*%`=!"  
+  set argIsValid=y  
+  if "!test!"=="!args!" set argIsValid=
+  REM all arguments should start with a dash
+  set "arg=%~1"  
+  if not "!arg:~0,1!"=="-" set argIsValid=
+  if not defined argIsValid (   
+    echo Error: There is no argument called '%~1'
+    goto :EOF
+    REM flagEnum=ask,y,n,true,false 
+  ) else if /i "!search:~0,4!"=="flag" (
+    set "nextChar=%~2"
+    set "nextChar=!nextChar:~0,1!"   
+    set noValue=
+    if "%~2" =="" set noValue=y     
+    if "!nextChar!"=="-" set noValue=y      
+    if not defined noValue (      
+      set "test=!flagEnum:*%~2,=!"  
+      if "!test!"=="!flagEnum!" (        
+        echo Error: Invalid value `%~2` for argument `%~1`.
+        echo Possible values: !flagEnum:~0,-1!
+        goto :EOF
+      ) 
+      if /i "%~2"=="true" set isTrue=y
+      if /i "%~2"=="y" set isTrue=y    
+      if defined isTrue (
+        set "%~1=y"
+      ) else if /i "%~2"=="ask" (
+        set "%~1=ask"
+      ) else ( 
+        set "%~1=n"
+      ) 
+      shift /1
+    ) else (   
+      set "%~1=y"
+    )    
+    REM combineModeEnum=ask,none,simple,composite,numericSuffix
+  ) else if /i "!search:~0,11!"=="combineMode" (
+    set "nextChar=%~2"
+    set "nextChar=!nextChar:~0,1!"   
+    set noValue=
+    if "%~2" =="" set noValue=y     
+    if "!nextChar!"=="-" set noValue=y      
+    if not defined noValue (      
+      set "test=!combineModeEnum:*%~2,=!"  
+      if "!test!"=="!combineModeEnum!" (        
+        echo Error: Invalid value `%~2` for argument `%~1`.
+        echo Possible values: !combineModeEnum:~0,-1!
+        goto :EOF
+      )
+      if /i "%~2"=="ask" (
+        set "%~1=ask"
+      ) else if "%~2"=="none" (
+        set "%~1=none"
+      ) else if "%~2"=="simple" (
+        set "%~1=simple"
+      ) else if "%~2"=="composite" (
+        set "%~1=composite"
+      ) else if "%~2"=="numericSuffix" (
+        set "%~1=numericSuffix"
+      )
+      shift /1
+    ) else (   
+      set "%~1=simple"
+    )    
+    REM copyModeEnum=ask,none,all,some
+  ) else if /i "!search:~0,8!"=="copyMode" (
+    set "nextChar=%~2"
+    set "nextChar=!nextChar:~0,1!"   
+    set noValue=
+    if "%~2" =="" set noValue=y     
+    if "!nextChar!"=="-" set noValue=y      
+    if not defined noValue (      
+      set "test=!copyModeEnum:*%~2,=!"  
+      if "!test!"=="!copyModeEnum!" (        
+        echo Error: Invalid value `%~2` for argument `%~1`.
+        echo Possible values: !copyModeEnum:~0,-1!
+        goto :EOF
+      )
+      if /i "%~2"=="ask" (
+        set "%~1=ask"
+      ) else if "%~2"=="none" (
+        set "%~1=none"
+      ) else if "%~2"=="all" (
+        set "%~1=all"
+      ) else if "%~2"=="some" (
+        set "%~1=some"
+      ) 
+      shift /1
+    ) else (   
+      set "%~1=all"
+    )    
+  ) else if /i "!search:~0,5!"=="value" (
+    set "%~1=%~2"
+    shift /1
+  ) 
+  shift /1  
+  goto :ReadArg
+)
+endlocal&(
+set "_argIncludeExtraFiles=%-includeExtraFiles%"
+set "_argRebuildMod=%-rebuildMod%"
+set "_argCombine=%-combine%"
+set "_argCopy=%-copy%"
+set "_argUpdateMBINCompiler=%-updateMBINCompiler%"
+set "_argCheckForConflicts=%-checkForConflicts%"
+set "_argRecreatePakList=%-recreatePakList%"
+set "_argRecreateMapFileTrees=%-recreateMapFileTrees%"
+)
+rem ------------- end reding arguments  -------------------------------
 
 if exist VERBOSE.txt (set _mVERBOSE=y)
 if exist PAUSE.txt (set _mPAUSE=y)
@@ -266,9 +369,9 @@ FOR /r "%~dp0\ModExtraFilesToInclude" %%G in (*.*) do (
 )
 if %_bExtraFiles% EQU 0 goto :NO_EXTRAFILES
 
-if defined _bIsUsingArgs (
-if defined _bIncludeExtraFilesArg ( SET _bExtraFilesInPAK=y) 
-GOTO :SKIPCHOICE_EXTRAFILES
+if not !_argIncludeExtraFiles!==ask (
+	if !_argIncludeExtraFiles!==y (	set _bExtraFilesInPAK=y)	
+	goto :SKIPCHOICE_EXTRAFILES
 )
 echo.
 echo.^>^>^> There are Extra Files in the ModExtraFilesToInclude folder.  If you INCLUDE them...
@@ -349,10 +452,9 @@ if %_bNumberScripts% EQU 0 (
 ) else (
 	goto :BYPASSPAKEXTRACT
 )
-
-if defined _bIsUsingArgs (
-if defined _bRebuildModArg( SET _bBuildMODpak=y ) else ( SET _bNumberScripts=0 )
-GOTO :SKIPCHOICE_REBUILDMOD
+if not !_argRebuildMod!==ask (
+	if !_argRebuildMod!==y ( SET _bBuildMODpak=y ) else ( SET _bNumberScripts=0 )
+	GOTO :SKIPCHOICE_REBUILDMOD
 )
 echo.-----------------------------------------------------------
 echo.
@@ -389,21 +491,18 @@ CALL :DOPAUSE
 if defined _bNoMod goto :EXECUTE
 if defined _mSIMPLE goto :SIMPLE_MODE 
 if %_bNumberScripts% EQU 1 goto :SIMPLE_MODE
-
-if defined _bIsUsingArgs (
-if defined _bSimpleCombineArg (
-	 SET _bCOMBINE_MODS=1
-	 goto :SKIPCHOICE_COPY
-)
-if defined _bNummericSuffixCombineArg (
-	 SET _bCOMBINE_MODS=2
-	 goto :SKIPCHOICE_COPY
-)
-if defined _bCompositeCombineArg (
-	 SET _bCOMBINE_MODS=3	 
-	 goto :SKIPCHOICE_COPY
-)
-goto :SKIPCHOICE_COMBINE
+REM combineModeEnum=ask,none,simple,composite,numericSuffix
+if not !_argCombine!==ask (
+	if !_argCombine!==simple (
+		SET _bCOMBINE_MODS=1
+	) else if !_argCombine!==numericSuffix (	
+		SET _bCOMBINE_MODS=2
+	) else if !_argCombine!==composite (
+		SET _bCOMBINE_MODS=3
+	) else if !_argCombine!==none (
+		goto :SKIPCHOICE_COMBINE
+	)
+	goto :SKIPCHOICE_COPY	
 )
 echo.
 echo.^>^>^> INDIVIDUAL PAKs may or may not work together depending on the EXML files they change
@@ -441,17 +540,16 @@ goto :CONTINUE_EXECUTION2
 :SKIPCHOICE_COMBINE
 
 :CONTINUE_EXECUTION1
-if defined _bIsUsingArgs (
-if defined _bCopyAllArg (
-	 SET _bCOPYtoNMS=ALL
-	 goto :SKIPCHOICE_COPY	 
-)
-if defined _bCopySomeArg (
-	 SET _bCOPYtoNMS=SOME
-	 goto :SKIPCHOICE_COPY	 
-)
-SET _bCOPYtoNMS=NONE
-goto :SKIPCHOICE_COPY
+REM copyModeEnum=ask,none,all,some
+if not !_argCopy!==ask (
+	if !_argCopy!==all (
+		SET _bCOPYtoNMS=ALL
+	) else if !_argCopy!==some (
+		SET _bCOPYtoNMS=SOME
+	) else if !_argCopy!==none (
+		SET _bCOPYtoNMS=NONE
+	)
+	goto :SKIPCHOICE_COPY
 )
 echo.
 CHOICE /c:NSA /m "??? Would you like or [N]ot to COPY [S]ome or [A]ll Created Mod PAKs to your game folder and DELETE [DISABLEMODS.TXT] "
@@ -466,17 +564,16 @@ goto :EXECUTE
 
 :SIMPLE_MODE
 if %_bNumberScripts% EQU 0 goto :EXECUTE
-if defined _bIsUsingArgs (
-if defined _bCopyAllArg (
-	 SET _bCOPYtoNMS=ALL
-	 goto :SKIPCHOICE_SIMPLECOPY	 
-)
-if defined _bCopySomeArg (
-	 SET _bCOPYtoNMS=ALL
-	 goto :SKIPCHOICE_SIMPLECOPY	 
-)
-SET _bCOPYtoNMS=NONE
-goto :SKIPCHOICE_SIMPLECOPY
+REM copyModeEnum=ask,none,all,some
+if not !_argCopy!==ask (
+	if !_argCopy!==all (
+		SET _bCOPYtoNMS=ALL
+	) else if !_argCopy!==some (
+		SET _bCOPYtoNMS=SOME
+	) else if !_argCopy!==none (
+		SET _bCOPYtoNMS=NONE
+	)
+	goto :SKIPCHOICE_SIMPLECOPY
 )
 echo.
 CHOICE /c:YN /m "??? Would you like to COPY the created Mod PAKs to your game folder and DELETE [DISABLEMODS.TXT] "
@@ -527,14 +624,12 @@ rem ****************************  start MBINCompiler.exe update section  *******
 if defined _mSIMPLE goto :SIMPLE_MODE1
 echo.
 if not exist "MBINCompiler.exe" CALL MBINCompilerDownloader.bat & goto :CONTINUE_EXECUTION2
-
-if defined _bIsUsingArgs (
-	if defined _bUpdateMbinCompilerArg ( 
+if not !_argUpdateMBINCompiler!==ask (
+	if !_argUpdateMBINCompiler!==y (
 		goto :SKIPCHOICE_UPDATECOMPILER
-		) else (
+	) else (
 		goto :CONTINUE_EXECUTION2
-)
-GOTO :SKIPCHOICE_UPDATECOMPILER
+	)
 )
 Del /f /q /s "MBINCompilerVersion.txt" 1>NUL 2>NUL
 MBINCompiler.exe version -q >>MBINCompilerVersion.txt
@@ -568,9 +663,9 @@ if defined _mVERBOSE (
 )
 
 rem -------------   Conflict detection or not?  -------------
-if defined _bIsUsingArgs (
-if defined _bCheckForConflictArg ( set _bCheckMODSconflicts= 1 ) else ( set _bCheckMODSconflicts= 2 )
-GOTO :SKIPCHOICE_CHECKFORCONFLICT
+if not !_argCheckForConflicts!==ask (
+	if !_argCheckForConflicts!==y ( set _bCheckMODSconflicts= 1 ) else ( set _bCheckMODSconflicts= 2 )
+	GOTO :SKIPCHOICE_CHECKFORCONFLICT
 )
 echo.
 CHOICE /c:yn /m "??? Would you like to check your NMS MODS for conflict?"
@@ -607,9 +702,9 @@ goto :NoNeedToAsk
 
 :Ask
 if not exist "..\DEBUG.txt" goto :NoNeedToAsk
-if defined _bIsUsingArgs (
-if defined _bRecreatePakListArg ( set _bRecreatePAKList=1) else ( set _bRecreatePAKList=2)
-GOTO :SKIPCHOICE_RECREATEPAKLIST
+if not !_argRecreatePakList!==ask (
+	if !_argRecreatePakList!==y ( set _bRecreatePAKList=1) else ( set _bRecreatePAKList=2)
+	GOTO :SKIPCHOICE_RECREATEPAKLIST
 )
 echo.
 REM echo.^>^>^> If there was a NMS update, it is recommended to recreate this list
@@ -647,10 +742,9 @@ if defined _mWbertro (
 	set _bRecreateMapFileTrees=1
 	goto :START
 )
-
-if defined _bIsUsingArgs (
-if defined _bRecreateMapFileTreesArg ( set _bRecreateMapFileTrees=1) 	
-GOTO :SKIPCHOICE_RECREATEMAPLIST
+if not !_argRecreateMapFileTrees!==ask (
+	if !_argRecreateMapFileTrees!==y ( set _bRecreateMapFileTrees=1)
+	GOTO :SKIPCHOICE_RECREATEMAPLIST
 )
 CHOICE /c:yn /m "??? Do you want to (RE)CREATE the MapFileTrees files DURING script processing"
 if %ERRORLEVEL% EQU 1 (set _bRecreateMapFileTrees=1)
@@ -809,7 +903,7 @@ if %_bNumberPAKs% GTR 0 (
 echo.---------------------------------------------------------
 if defined _mSIMPLE goto :SIMPLE_MODE2 
 if defined _min_subprocess goto :SIMPLE_MODE2 
-if defined _bIsUsingArgs goto :SIMPLE_MODE2
+REM TODO: consider adding an option to bypass this timeout
 timeout /t 5
 
 :SIMPLE_MODE2 
