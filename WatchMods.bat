@@ -1,2 +1,2 @@
 @echo off
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& '%cd%\w.ps1'"
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "& '%cd%\MODBUILDER\w.ps1'"
