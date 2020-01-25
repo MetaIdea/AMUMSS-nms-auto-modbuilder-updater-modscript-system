@@ -1,8 +1,16 @@
-# set the arguments to be passed to the builder
-$args = "-copy","-recreateMapFileTrees" 
+
 function Get-CurrentDirectory {    
     return Split-Path $MyInvocation.ScriptName
 }
+$global:tempVar=[string]::Empty 
+foreach ($item in Get-Content -Path "OPTIONS.txt") {
+    $list=$item.Split("=")
+    $global:tempVar+="-$($list[0]) $($list[1]) "
+}
+$args=$tempVar
+Remove-Variable tempVar -Scope Global
+# set the arguments to be passed to the builder
+# $args = "-copy", "-recreateMapFileTrees" 
 $pathToMonitor = Join-Path (Get-CurrentDirectory) "ModScript"
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Filter = "*.lua"
@@ -30,7 +38,7 @@ $handlers = . {
     # Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $Action -SourceIdentifier FSRename
 }
 
-Write-Host "Watching for changes to /ModScript"
+Write-Host "Watching for changes in /ModScript"
 
 try {
     do {
@@ -47,4 +55,5 @@ finally {
     $handlers | Remove-Job    
     $watcher.EnableRaisingEvents = $false
     $watcher.Dispose()
+    Remove-Variable options -Scope Global
 }
