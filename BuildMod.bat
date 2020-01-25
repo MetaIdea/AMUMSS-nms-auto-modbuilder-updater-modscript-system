@@ -85,6 +85,7 @@ if not "%~1"=="" (
         echo Possible values: !flagEnum:~0,-1!
         goto :EOF
       ) 
+      set isTrue=
       if /i "%~2"=="true" set isTrue=y
       if /i "%~2"=="y" set isTrue=y    
       if defined isTrue (
@@ -569,7 +570,7 @@ if not !_argCopy!==ask (
 	if !_argCopy!==all (
 		SET _bCOPYtoNMS=ALL
 	) else if !_argCopy!==some (
-		SET _bCOPYtoNMS=SOME
+		SET _bCOPYtoNMS=ALL
 	) else if !_argCopy!==none (
 		SET _bCOPYtoNMS=NONE
 	)
