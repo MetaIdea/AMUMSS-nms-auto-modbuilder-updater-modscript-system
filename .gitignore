@@ -10,6 +10,7 @@ MODBUILDER/OnlyOneScript.txt
 MODBUILDER/PAK_LIST_CREATED.txt
 MODBUILDER/pak_list.txt
 .vs/
+.vscode/
 Builds/
 CreatedModPAKs/
 EXML_Helper/
