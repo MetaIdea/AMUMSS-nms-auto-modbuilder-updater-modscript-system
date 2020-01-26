@@ -70,6 +70,7 @@ if not "%~1"=="" (
   if not "!arg:~0,1!"=="-" set argIsValid=
   if not defined argIsValid (   
     echo Error: There is no argument called '%~1'
+	pause
     goto :EOF
     REM flagEnum=ask,y,n,true,false 
   ) else if /i "!search:~0,4!"=="flag" (
@@ -83,6 +84,7 @@ if not "%~1"=="" (
       if "!test!"=="!flagEnum!" (        
         echo Error: Invalid value `%~2` for argument `%~1`.
         echo Possible values: !flagEnum:~0,-1!
+		pause
         goto :EOF
       ) 
       set isTrue=
@@ -111,6 +113,7 @@ if not "%~1"=="" (
       if "!test!"=="!combineModeEnum!" (        
         echo Error: Invalid value `%~2` for argument `%~1`.
         echo Possible values: !combineModeEnum:~0,-1!
+		pause
         goto :EOF
       )
       if /i "%~2"=="ask" (
@@ -140,6 +143,7 @@ if not "%~1"=="" (
       if "!test!"=="!copyModeEnum!" (        
         echo Error: Invalid value `%~2` for argument `%~1`.
         echo Possible values: !copyModeEnum:~0,-1!
+		pause
         goto :EOF
       )
       if /i "%~2"=="ask" (
