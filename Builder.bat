@@ -175,7 +175,8 @@ set "_argRecreateMapFileTrees=%-recreateMapFileTrees%"
 rem ------------- end reding arguments  -------------------------------
 echo.  %DATE% %TIME% We are good^!
 echo.
-cd /D "%~dp0"
+pushd "%~dp0\.."
+set "_bMASTER_FOLDER_PATH=%CD%"
 
 if exist VERBOSE.txt (set _mVERBOSE=y)
 if exist PAUSE.txt (set _mPAUSE=y)
@@ -336,7 +337,7 @@ echo|set /p="This mod contains:">"MODBUILDER\COMBINED_CONTENT_LIST.txt"
 echo.>>"MODBUILDER\COMBINED_CONTENT_LIST.txt"
 
 SET _bMyTemp2=
-FOR /r "%~dp0\ModScript" %%G in (*.lua) do ( 
+FOR /r "%_bMASTER_FOLDER_PATH%\ModScript" %%G in (*.lua) do ( 
 	SET /A _bNumberScripts=_bNumberScripts+1
 	SET _bMyTemp1=%%~nG
 	SET _bMyTemp2=!_bMyTemp2!!_bMyTemp1!+
@@ -368,7 +369,7 @@ rem --------------  Check if ExtraFilesToInclude present -----------------------
 SET _bExtraFiles=0
 
 rem Check if some files also exist in ModExtraFilesToInclude
-FOR /r "%~dp0\ModExtraFilesToInclude" %%G in (*.*) do ( 
+FOR /r "%_bMASTER_FOLDER_PATH%\ModExtraFilesToInclude" %%G in (*.*) do ( 
 	SET /A _bExtraFiles=_bExtraFiles+1
 )
 if %_bExtraFiles% EQU 0 goto :NO_EXTRAFILES
@@ -392,7 +393,7 @@ rem --------------  Check # of PAKs present ------------------------------
 SET _bNumberPAKs=0
 
 rem Check if some mod PAK also exist in ModScript
-FOR /r "%~dp0\ModScript" %%G in (*.pak) do ( 
+FOR /r "%_bMASTER_FOLDER_PATH%\ModScript" %%G in (*.pak) do ( 
 	SET /A _bNumberPAKs=_bNumberPAKs+1
 	SET _bPAKname=%%~nG
 )
@@ -445,7 +446,7 @@ if %_bNumberScripts% EQU 0 (
 		rem ******   BACK IN starting folder   *****
 
 		REM re-calculate number of script
-		FOR /r "%~dp0\ModScript" %%G in (*.lua) do ( 
+		FOR /r "%_bMASTER_FOLDER_PATH%\ModScript" %%G in (*.lua) do ( 
 			SET /A _bNumberScripts=_bNumberScripts+1
 		)
 
@@ -589,7 +590,6 @@ rem -------- user options end here -----------
 :EXECUTE
 
 rem --------------------------------------------
-set _bMASTER_FOLDER_PATH="%~dp0"
 
 if not exist "%CD%\CreatedModPAKs" (
 	mkdir "%CD%\CreatedModPAKs\" 2>NUL
@@ -608,9 +608,7 @@ cd MODBUILDER
 pushd "%CD%"
 
 rem *********************  NOW IN MODBUILDER  *******************
-
-echo|set /p="%~dp0">MASTER_FOLDER_PATH.txt
-
+echo|set /p="%_bMASTER_FOLDER_PATH%\">MASTER_FOLDER_PATH.txt
 rem always Cleaning _TEMP at the start of a new run
 CALL :Cleaning_TEMP
 
@@ -924,7 +922,7 @@ echo.^>^>^> %_bB% Number of scripts to build: %_bNumberScripts%
 SET _bScriptCounter=0
 
 rem --------  processing loop only if scripts are present -------------
-FOR /r "%~dp0\ModScript" %%G in (*.lua) do (
+FOR /r "%_bMASTER_FOLDER_PATH%\ModScript" %%G in (*.lua) do (
 	set "_bScriptName=%%~nxG"
 	rem making sure we are in MODBUILDER
 	popd
@@ -957,7 +955,7 @@ FOR /r "%~dp0\ModScript" %%G in (*.lua) do (
 		echo.
 		echo.^>^>^> %_bB% Changing to directory MODBUILDER
 	)
-	cd /d %~dp0\MODBUILDER
+	cd /d %_bMASTER_FOLDER_PATH%\MODBUILDER
 	if defined _mVERBOSE (
 		echo.^>^>^> %_bB% Changed to !CD!
 	)
@@ -1078,9 +1076,9 @@ FOR /r "%~dp0\ModScript" %%G in (*.lua) do (
 		echo.^>^>^> %_bB% Updating EXML_Helper\MOD_EXML...
 		echo.^>^>^> %_bB% Note that the MOD_EXML files WILL BE the latest ones based on script processing order
 		
-		cd "%~dp0"
+		cd "%_bMASTER_FOLDER_PATH%"
 		xcopy /f /s /y /h /e /v /i /j /c "MODBUILDER\MOD\*.EXML" "EXML_Helper\MOD_EXML\" 1>NUL 2>NUL
-		cd "%~dp0\MODBUILDER"
+		cd "%_bMASTER_FOLDER_PATH%\MODBUILDER"
 	)
 	set _bErrorLoadingScript=
 	del /f /q LoadScriptAndFilenamesERROR.txt 1>NUL 2>NUL
@@ -1095,7 +1093,7 @@ if defined _mVERBOSE (
 	echo.^>^>^> %_bB% In %CD%
 )
 
-cd "%~dp0\MODBUILDER"
+cd "%_bMASTER_FOLDER_PATH%\MODBUILDER"
 rem WE ARE IN MODBUILDER
 
 if defined _mVERBOSE (

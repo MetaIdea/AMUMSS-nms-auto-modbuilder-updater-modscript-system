@@ -31,4 +31,4 @@ rem If we decide to just not support same line comments we should change it to `
 for /f "tokens=1,2 eol=# delims=: " %%G in (%optionsFile%) do (    
     set "args=!args!-%%G %%~H "
 )
-!rootPath!\Builder.bat %args%
+!rootPath!\MODBUILDER\Builder.bat %args%
