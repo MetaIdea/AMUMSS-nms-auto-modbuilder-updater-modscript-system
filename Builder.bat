@@ -20,16 +20,12 @@ if DEFINED _bADMIN (
 	echo.ERROR: Please do NOT "Run as administrator", AMUMSS will not work^!
 	pause
 	goto :eof
-) else (
-	echo.  %DATE% %TIME% We are good^!
-	echo.
-)
+) 
 
 set _bMyPath=
 set _bSystem32=
 set _bADMIN=
 rem -------------  end testing for administrator  -------------------------------
-cd /D "%~dp0"
 rem -------------  reding arguments  -------------------------------
 rem making the variables made inside the read argument section local
 SETLOCAL EnableDelayedExpansion
@@ -177,6 +173,9 @@ set "_argRecreatePakList=%-recreatePakList%"
 set "_argRecreateMapFileTrees=%-recreateMapFileTrees%"
 )
 rem ------------- end reding arguments  -------------------------------
+echo.  %DATE% %TIME% We are good^!
+echo.
+cd /D "%~dp0"
 
 if exist VERBOSE.txt (set _mVERBOSE=y)
 if exist PAUSE.txt (set _mPAUSE=y)
