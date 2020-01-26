@@ -1,8 +1,0 @@
-includeExtraFiles=ask
-rebuildMod=ask
-combine=ask
-copy=ask
-updateMBINCompiler=ask
-checkForConflicts=ask
-recreatePakList=ask
-recreateMapFileTrees=ask

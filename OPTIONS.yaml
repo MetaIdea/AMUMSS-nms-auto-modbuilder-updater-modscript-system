@@ -1,0 +1,18 @@
+# These are the default options used by BuildMod.bat to build your mods.
+# In each one of them you can either specify a default value or put 'ask'.
+# Any option with a value of ask will result in the builder to ask you the question during the build process.
+
+# Possible Values:
+# combine = ask, none, simple, composite, numericSuffix
+# copy =  ask, none, all, some
+
+# All the other options are flags with possible values of: ask, true, false
+
+combine: ask
+copy: ask
+includeExtraFiles: ask
+rebuildMod: ask
+updateMBINCompiler: ask
+checkForConflicts: ask
+recreatePakList: ask
+recreateMapFileTrees: ask
