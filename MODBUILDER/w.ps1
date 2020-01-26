@@ -3,30 +3,15 @@ $scriptDirectory = Split-Path $MyInvocation.MyCommand.Path
 function Get-RootPath {    
     return Join-Path $scriptDirectory ".." -Resolve
 }
-function Get-ArgsFromTextFile {
-    $script:result = @()
-    $rootPath = Get-RootPath
-    $optionsPath = Join-Path $rootPath "OPTIONS.txt"
-    foreach ($item in Get-Content -Path $optionsPath) {
-        $list = $item.Split("=")
-        $script:result += "-$($list[0])"
-        $script:result +=$list[1]
-    }    
-    return $result
-}
 
 $watcher = New-Object System.IO.FileSystemWatcher
 $watcher.Filter = "*.lua"
 $watcher.Path = Join-Path (Get-RootPath) "ModScript"
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true
-function FunctionName {
-    
-    
-}
-$cachedLastWriteTime = [long]([DateTime]::MinValue.Ticks)
-$global:batPath = Join-Path (Get-RootPath) "builder.bat"
-$global:arguments = Get-ArgsFromTextFile
+
+$global:cachedLastWriteTime = [long]([DateTime]::MinValue.Ticks)
+$global:batPath = Join-Path (Get-RootPath) "BuildMod.bat"
 $action = {  
     param ($watcher, $eventArgs)
     $path = $eventArgs.FullPath
@@ -36,9 +21,10 @@ $action = {
         $fileName = Split-Path $path -leaf
         write-host "`n$changeType $fileName [$(Get-Date -Format HH:mm:ss)]" 
         $cachedLastWriteTime = $lastWriteTime        
-        Start-Process $batPath -ArgumentList $arguments
+        Start-Process $batPath
     }     
 }
+
 $handlers = . {
     Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $Action -SourceIdentifier FSChange
     # Register-ObjectEvent -InputObject $watcher -EventName Created -Action $Action -SourceIdentifier FSCreate
@@ -47,7 +33,6 @@ $handlers = . {
 }
 
 Write-Host "Watching for changes in '$($watcher.Path)'"
-
 try {
     do {
         Wait-Event -Timeout 1       
