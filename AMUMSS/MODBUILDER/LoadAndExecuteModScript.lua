@@ -229,25 +229,25 @@ function HandleModScript(MOD_DEF,Multi_pak)
             local src = [[.\_TEMP\DECOMPILED\]]..file
             if IsFileExist(src) then
               if _bRecreateMapFileTrees ~= nil then
-                if _bAllowMapFileTreeCreator ~= nil then
-                  print("    MapFileTree creation/update on 2nd thread...")
-                  Report("","    MapFileTree creation/update done by 2nd thread")
+                -- if _bAllowMapFileTreeCreator ~= nil then
+                  -- print("    MapFileTree creation/update on 2nd thread...")
+                  -- Report("","    MapFileTree creation/update done by 2nd thread")
                   
-                  --copy it to a temp folder for processing
-                  --because it may be removed later before creation is started/completed
-                  local src = [[.\_TEMP\DECOMPILED\]]..file
-                  local dest = [[.\_TEMP_MAP\]]..file
-                  CopyFile(src,dest)
+                  -- --copy it to a temp folder for processing
+                  -- --because it may be removed later before creation is started/completed
+                  -- local src = [[.\_TEMP\DECOMPILED\]]..file
+                  -- local dest = [[.\_TEMP_MAP\]]..file
+                  -- CopyFile(src,dest)
                   
-                  if IsFileExist([[MapFileTreeSharedList.txt]]) then
-                    WriteToFileAppend(file.."\n",[[MapFileTreeSharedList.txt]])
-                  else
-                    WriteToFile(file.."\n",[[MapFileTreeSharedList.txt]])
-                  end
-                else
+                  -- if IsFileExist([[MapFileTreeSharedList.txt]]) then
+                    -- WriteToFileAppend(file.."\n",[[MapFileTreeSharedList.txt]])
+                  -- else
+                    -- WriteToFile(file.."\n",[[MapFileTreeSharedList.txt]])
+                  -- end
+                -- else
                   --in this thread processing
                   DisplayMapFileTreeEXT(ParseTextFileIntoTable([[.\_TEMP\DECOMPILED\]]..file),file)
-                end
+                -- end
               else
                 print("    Skipping MapFileTree creation/update")
                 -- Report("","    Skipping MapFileTree creation/update")
@@ -3271,7 +3271,7 @@ function MapFileTree(TextFileTable,file)
   local j = 0
   repeat
     j = j + 1
-  until string.find(TextFileTable[j],[[<Data template=]],1,true) ~= nil
+  until j > #TextFileTable or string.find(TextFileTable[j],[[<Data template=]],1,true) ~= nil
   
   for i=j,#TextFileTable do
     local text = TextFileTable[i]
